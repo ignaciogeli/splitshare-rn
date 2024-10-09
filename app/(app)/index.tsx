@@ -1,72 +1,68 @@
+import { AntDesign } from '@expo/vector-icons'; // Importar un ícono para el botón flotante
+import { fetchGroups } from '../api';
+import { Text, View, ActivityIndicator, TouchableOpacity} from 'react-native';
 import { useEffect, useState } from 'react';
-import { FlatList, Text, View, ActivityIndicator } from 'react-native';
 import { useSession } from '../../ctx';
-import { Link, useRouter } from 'expo-router';
-import axios from 'axios';
+import { useRouter } from 'expo-router';
+import { styles } from './styles'; // Import styles from the .ts file
+import CreateGroupModalComponent from "./createGroup"
+import GroupList from './groupList';
 
 export default function Index() {
   const { signOut, session } = useSession();
   const router = useRouter();
-  const [groups, setGroups] = useState([]); // Estado para almacenar los grupos
-  const [loading, setLoading] = useState(true); // Estado para manejar la carga
-  const [error, setError] = useState<{status?:number, message?: string} | null>(null); // Estado para manejar errores
+  const [groups, setGroups] = useState([]); // State to store groups
+  const [loading, setLoading] = useState(true); // State to handle loading
+  const [error, setError] = useState<{ status?: number, message?: string } | null>(null); // State to handle errors
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
-    // Función para obtener datos de la API
-    const fetchGroups = async () => {
-      try {
-        if (session) {
-          const response = await axios.get('http://localhost:8000/groups/', {
-            headers: {
-              Authorization: `bearer ${session}`, // Suponiendo que el token es necesario en los headers
-            },
-          });
-          setGroups(response.data); // Guarda los datos obtenidos
-        }
-      } catch (e: any) {
-        const err :  {status?:number, message?: string}  = {status: e?.status, message:e?.message};
-        if(err.status === 401){
-          signOut()
-          router.replace("/sign-in")
-        }
-        setError({status: err?.status, message:err?.message}); // Manejo de errores
-        console.error(err);
-      } finally {
-        setLoading(false); // Cambia el estado de carga
-      }
+    // Function to fetch data from the API
+    const getGroups = async () => {
+      await fetchGroups(session, signOut, router, setGroups, setError);
+      setLoading(false); // Cambia el estado de carga después de la llamada
     };
+    getGroups();
 
-    fetchGroups(); // Llama a la función para obtener datos
-  }, [session]); // Se ejecuta cuando cambia `session`
+  }, [session]); // Executes when `session` changes
 
   if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />; // Muestra un indicador de carga
+    return <ActivityIndicator size="large" color="#0000ff" />; // Show loading indicator
   }
 
   if (error) {
-    return <Text>Error: {error.message}</Text>; // Muestra el mensaje de error
+    return <Text>Error: {error.message}</Text>; // Show error message
+  }
+
+  const createGroup = () => {
+    setModalVisible(true);
   }
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={styles.container}>
 
-      <Text>Welcome user, here are your groups: </Text>
-      
-      <FlatList
-        data={groups}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => 
-          (
-            <Link href={`/groupdetail/${item.id}`}>* {item.name}</Link>
-          )
-      }
+      <Text style={styles.title}>Welcome user, here are your groups:</Text>
+
+      <GroupList groups={groups} />
+
+      <CreateGroupModalComponent
+      visible={modalVisible}
+      onClose={() => setModalVisible(false)}
       />
 
+      <TouchableOpacity
+        style={styles.floatingButton}
+        onPress={createGroup}
+      >
+        <View style={styles.buttonContent}>
+          <AntDesign name="plus" size={24} color="white" />
+          <Text style={styles.buttonText}>New group</Text>
+        </View>      </TouchableOpacity>
       <Text
         onPress={() => {
           signOut();
         }}
-        style={{ marginTop: 20, color: 'blue', textDecorationLine: 'underline' }}>
+        style={styles.signOutText}>
         Sign Out
       </Text>
     </View>
