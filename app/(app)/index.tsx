@@ -11,19 +11,20 @@ import GroupList from './groupList';
 export default function Index() {
   const { signOut, session } = useSession();
   const router = useRouter();
-  const [groups, setGroups] = useState([]); // State to store groups
+  const [groups, setGroups] = useState<any[]>([]);  // State to store groups
   const [loading, setLoading] = useState(true); // State to handle loading
   const [error, setError] = useState<{ status?: number, message?: string } | null>(null); // State to handle errors
   const [modalVisible, setModalVisible] = useState(false);
 
-  useEffect(() => {
-    // Function to fetch data from the API
-    const getGroups = async () => {
-      await fetchGroups(session, signOut, router, setGroups, setError);
-      setLoading(false); // Cambia el estado de carga después de la llamada
-    };
-    getGroups();
 
+  const getGroups = async () => {
+    setLoading(true);
+    await fetchGroups(session ?? null, signOut, router, setGroups, setError);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getGroups();
   }, [session]); // Executes when `session` changes
 
   if (loading) {
@@ -48,16 +49,17 @@ export default function Index() {
       <CreateGroupModalComponent
       visible={modalVisible}
       onClose={() => setModalVisible(false)}
+      session={session ?? null}
+      onGroupCreated={getGroups}
       />
 
       <TouchableOpacity
         style={styles.floatingButton}
         onPress={createGroup}
       >
-        <View style={styles.buttonContent}>
           <AntDesign name="plus" size={24} color="white" />
           <Text style={styles.buttonText}>New group</Text>
-        </View>      </TouchableOpacity>
+      </TouchableOpacity>
       <Text
         onPress={() => {
           signOut();

@@ -27,11 +27,19 @@ export default function SignInScreen() {
   }
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
       {session ? (
         <Text>Welcome! You are logged in.</Text>
       ) : (
-        <Button title="Sign In" onPress={() => signIn()} />
+        <>
+          <Text style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginBottom: 10 }}>
+            Welcome to SplitShare
+          </Text>
+          <Text style={{ fontSize: 16, textAlign: 'center', marginBottom: 20 }}>
+            An app designed to help you keep track of shared expenses with friends or family, whether on a trip or for a short period. Please sign in to continue.
+          </Text>
+          <Button title="Sign In" onPress={() => signIn()} />
+        </>
       )}
     </View>
   );
