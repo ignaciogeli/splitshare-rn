@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from 'expo-router';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import { useSession } from '../../../ctx';
 import { fetchExpenses, GroupDetail, Expense, FetchExpensesResponse} from '../../api';

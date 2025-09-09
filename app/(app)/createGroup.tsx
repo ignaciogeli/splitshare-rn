@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, View, Text, Button, StyleSheet } from 'react-native';
+import { Modal, View, Text, Button } from 'react-native';
 import { styles } from './styles';
 import { createGroup } from '../api';
 import { TextInput } from 'react-native-gesture-handler';

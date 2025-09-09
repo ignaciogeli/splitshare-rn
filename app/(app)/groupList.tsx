@@ -1,7 +1,9 @@
 import React from 'react';
 import { FlatList, TouchableOpacity, View, Text } from 'react-native';
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { styles } from './styles';
+import { Colors } from '../../constants/Colors';
+import { MaterialIcons } from '@expo/vector-icons';
 
 interface Group {
     id: number;
@@ -14,37 +16,40 @@ interface GroupListProps {
 }
 
 const GroupList: React.FC<GroupListProps> = ({ groups }) => {
+    const router = useRouter();
+
     return (
         <FlatList
             data={groups}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
-                <TouchableOpacity style={styles.card}>
+                <TouchableOpacity
+                    style={styles.card}
+                    onPress={() => router.push(`/groupdetail/${item.id}`)}
+                >
                     {/* Usar View para contener el texto y el Link sólo para la navegación */}
                     <View style={styles.expenseDetailsContainer}>
-                        <Text style={styles.groupName}>{item.name}</Text>
+                        <MaterialIcons name="group" size={24} color={Colors.light.tint} style={{ marginRight: 12 }} />
+                        <View style={{ flex: 1 }}>
+                            <Text style={styles.groupName}>{item.name}</Text>
 
-                        {item.totals && (
-                            <View style={styles.totalsContainer}>
-                                {Object.entries(item.totals).map(([currency, amount]) => (
-                                    <Text
-                                        key={currency}
-                                        style={[
-                                            styles.totalText,
-                                            { color: amount < 0 ? 'red' : 'green' }  // Cambiar color según el monto
-                                        ]}
-                                    >
-                                        {currency}: {amount}
-                                    </Text>
-                                ))}
-                            </View>
-                        )}
+                            {item.totals && (
+                                <View style={styles.totalsContainer}>
+                                    {Object.entries(item.totals).map(([currency, amount]) => (
+                                        <Text
+                                            key={currency}
+                                            style={[
+                                                styles.totalText,
+                                                { color: amount < 0 ? Colors.light.error : Colors.light.success }
+                                            ]}
+                                        >
+                                            {currency}: {amount}
+                                        </Text>
+                                    ))}
+                                </View>
+                            )}
+                        </View>
                     </View>
-
-                    {/* Link solo rodea la navegación */}
-                    <Link href={`/groupdetail/${item.id}`} style={styles.link}>
-                        View Details
-                    </Link>
                 </TouchableOpacity>
             )}
             ItemSeparatorComponent={() => <View style={styles.separator} />}

@@ -1,32 +1,48 @@
 // styles.ts
 import { StyleSheet } from 'react-native';
+import { Colors } from '../../constants/Colors';
 
 export const styles = StyleSheet.create({
+  // General Layout Styles
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: Colors.light.background,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: Colors.light.text,
+    marginBottom: 24,
+    textAlign: 'center',
+  },
+  separator: {
+    height: 16,
+  },
+
+  // Card and Link Styles
   card: {
-    backgroundColor: '#fff',
-    padding: 15,
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
+    backgroundColor: Colors.light.cardBackground,
+    padding: 20,
+    borderRadius: 16,
+    shadowColor: Colors.light.shadow,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 8,
     width: '100%',
+    marginVertical: 8,
+    borderWidth: 1,
+    borderColor: Colors.light.border,
   },
   link: {
     fontSize: 16,
-    color: '#007bff',
+    color: Colors.light.tint,
+    fontWeight: '600',
+    textDecorationLine: 'underline',
   },
-  separator: {
-    height: 10, // Espaciado entre elementos
-  },
-  signOutText: {
-    position: 'absolute',
-    bottom: 20, // Ajusta la distancia desde el fondo
-    left: 20,   // Alinea el texto "Sign Out" a la izquierda
-    fontSize: 16,
-    color: '#FF3B30',
-  },
+
+  // Modal Styles
   overlay: {
     flex: 1,
     justifyContent: 'center',
@@ -37,7 +53,7 @@ export const styles = StyleSheet.create({
     width: '80%', // Ajusta el ancho del modal
     maxHeight: '50%', // Limita la altura del modal para que no ocupe toda la pantalla
     padding: 20,
-    backgroundColor: 'white',
+    backgroundColor: Colors.light.background,
     borderRadius: 10,
     elevation: 5,
   },
@@ -45,18 +61,24 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+
+  // Button Styles
   floatingButton: {
     position: 'absolute',
-    bottom: 30, // Ajusta la posición del botón desde el fondo
-    right: 30,  // Ajusta la posición desde la derecha
-    backgroundColor: '#2196F3', // Color de fondo del botón
-    borderRadius: 30, // Hace el botón más ovalado en lugar de circular
-    paddingHorizontal: 25, // Ajusta el ancho del botón
-    paddingVertical: 15, // Ajusta la altura del botón
-    flexDirection: 'row', // Para alinear el ícono y el texto horizontalmente
+    bottom: 30,
+    right: 30,
+    backgroundColor: Colors.light.tint,
+    borderRadius: 28,
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 5, // Sombra para el botón (solo en Android)
+    elevation: 6,
+    shadowColor: Colors.light.shadow,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
   },
   buttonContent: {
     flexDirection: 'row', // Alinea ícono y texto
@@ -67,6 +89,11 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 10, // Espacio entre el ícono y el texto
   },
+  buttonSpacing: {
+    marginBottom: 10, // Espacio entre botones
+  },
+
+  // Input Styles
   input: {
     borderWidth: 1,
     borderColor: 'gray',
@@ -79,24 +106,11 @@ export const styles = StyleSheet.create({
     color: 'red',
     marginBottom: 10,
   },
-  buttonSpacing: {
-    marginBottom: 10, // Espacio entre botones
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#f5f5f5',
-  },
+
+  // Expense List Styles
   expensesListContainer: {
     flex: 1,
     padding: 20,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
   },
   expenseContainer: {
     flexDirection: 'row', // Coloca el ícono y el contenedor de texto en fila
@@ -133,19 +147,92 @@ export const styles = StyleSheet.create({
   amountContainer: {
     alignItems: 'flex-end', // Alinea ambos textos (amount y paidBy) a la derecha
   },
+
+  // Group Styles
   groupName: {
-      fontSize: 18,
-      fontWeight: 'bold',
+    fontSize: 20,
+    fontWeight: '700',
+    color: Colors.light.text,
+    marginBottom: 8,
   },
   totalsContainer: {
-      marginTop: 5,
+    marginTop: 5,
   },
   totalText: {
-      fontSize: 14,
-      color: '#666',
+    fontSize: 16,
+    fontWeight: '500',
+    color: Colors.light.icon,
   },
   noTotalsText: {
-      fontSize: 12,
-      color: '#999',
+    fontSize: 12,
+    color: '#999',
+  },
+
+  // Sign Out Style
+  signOutText: {
+    position: 'absolute',
+    bottom: 20, // Ajusta la distancia desde el fondo
+    left: 20,   // Alinea el texto "Sign Out" a la izquierda
+    fontSize: 16,
+    color: '#FF3B30',
+  },
+
+  // Component Styles
+  // Collapsible
+  collapsibleHeading: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  collapsibleContent: {
+    marginTop: 6,
+    marginLeft: 24,
+  },
+
+  // ParallaxScrollView
+  parallaxContainer: {
+    flex: 1,
+  },
+  parallaxHeader: {
+    height: 250,
+    overflow: 'hidden',
+  },
+  parallaxContent: {
+    flex: 1,
+    padding: 32,
+    gap: 16,
+    overflow: 'hidden',
+  },
+
+  // ThemedText
+  themedDefault: {
+    fontSize: 16,
+    lineHeight: 24,
+  },
+  themedDefaultSemiBold: {
+    fontSize: 16,
+    lineHeight: 24,
+    fontWeight: '600',
+  },
+  themedTitle: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    lineHeight: 32,
+  },
+  themedSubtitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  themedLink: {
+    lineHeight: 30,
+    fontSize: 16,
+    color: Colors.light.tint,
+  },
+
+  // HelloWave
+  waveText: {
+    fontSize: 28,
+    lineHeight: 32,
+    marginTop: -6,
   },
 });
